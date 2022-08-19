@@ -1,32 +1,31 @@
-import {html} from 'lit'
-import {unsafeHTML} from 'lit/directives/unsafe-html.js'
-import {Parser} from 'htmlparser2'
+import { html } from 'lit'
+import { unsafeHTML } from 'lit/directives/unsafe-html.js'
+import { Parser } from 'htmlparser2'
 
 export default (code, cb) => {
   const inner = []
-  const tokenClass = `token`
 
-  const lt = `&lt;`
-  const gt = `&gt;`
+  const lt = '&lt;'
+  const gt = '&gt;'
 
   const parser = new Parser({
-    onopentag(name, attribs) {
+    onopentag (name, attribs) {
       const attrs = []
       for (const name in attribs) {
-        attrs.push(html` <span class="${tokenClass} attr-name">${name}</span>=\"<span class="${tokenClass} attr-value">${attribs[name]}</span>\"`)
+        attrs.push(html` <span class="token attr-name">${name}</span>=\"<span class="token attr-value">${attribs[name]}</span>\"`)
       }
 
       // we have to use `unsafeHTML` for the &lt; / &gt; so they get decoded properly,
       // but confine unsafeness to only those html entities.
-      inner.push(html`${unsafeHTML(lt)}<span class="${tokenClass} tag">${name}</span>${attrs}${unsafeHTML(gt)}`)
+      inner.push(html`${unsafeHTML(lt)}<span class="token tag">${name}</span>${attrs}${unsafeHTML(gt)}`)
     },
-    ontext(text) {
+    ontext (text) {
       inner.push(html`${text}`)
     },
-    onclosetag(name) {
-      inner.push(html`${unsafeHTML(lt)}/<span class="${tokenClass} tag">${name}</span>${unsafeHTML(gt)}`)
+    onclosetag (name) {
+      inner.push(html`${unsafeHTML(lt)}/<span class="token tag">${name}</span>${unsafeHTML(gt)}`)
     },
-    onend() {
+    onend () {
       cb(inner)
     }
   })

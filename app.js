@@ -1,4 +1,4 @@
-import {LitElement, html} from 'lit'
+import { LitElement, html } from 'lit'
 import cssVars from './themes/default.js'
 import cssStyles from './css/styles.js'
 
@@ -13,14 +13,14 @@ export class SyntaxHighlight extends LitElement {
     cssStyles
   ]
 
-  constructor() {
+  constructor () {
     super()
     this.language = null
     this.highlighted = null
   }
 
-  handleSlotChange(e) {
-    const childNodes = e.target.assignedNodes({flatten: true})
+  handleSlotChange (e) {
+    const childNodes = e.target.assignedNodes({ flatten: true })
 
     if (childNodes && childNodes.length > 0) {
       const codeNode = childNodes[0]
@@ -35,7 +35,7 @@ export class SyntaxHighlight extends LitElement {
     }
   }
 
-  render() {
+  render () {
     const codeNode = this.highlighted ? this.highlighted : html`<slot @slotchange=${this.handleSlotChange}></slot>`
     return html`
       <div>
