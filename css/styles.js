@@ -1,6 +1,10 @@
 import {css} from 'lit'
 
 export default css`
+slot {
+  visibility: hidden;
+}
+
 code,
 pre {
   background-color: var(--bg-color);

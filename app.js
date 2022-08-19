@@ -1,7 +1,6 @@
 import {LitElement, html} from 'lit'
 import cssVars from './themes/default.js'
 import cssStyles from './css/styles.js'
-import parser from './parsers/css'
 
 export class SyntaxHighlight extends LitElement {
   static properties = {
@@ -20,21 +19,18 @@ export class SyntaxHighlight extends LitElement {
     this.highlighted = null
   }
 
-  firstUpdated() {
-    // adoptStyles(this.shadowRoot, styles)
-  }
-
   handleSlotChange(e) {
-    console.log(`language:`, this.language)
     const childNodes = e.target.assignedNodes({flatten: true})
 
     if (childNodes && childNodes.length > 0) {
       const codeNode = childNodes[0]
       const code = codeNode.textContent
 
-      parser(code, (inner) => {
-        this.highlighted = this.highlighted ? this.highlighted : inner
-        console.log(`highlighted:`, this.highlighted)
+      import(`./parsers/${this.language}/index.js`).then(parser => {
+        const parse = parser.default
+        parse(code, (inner) => {
+          this.highlighted = this.highlighted ? this.highlighted : inner
+        })
       })
     }
   }
