@@ -22,6 +22,7 @@
   "homepage": "https://github.com/emkay/mkwc#readme",
   "dependencies": {
     "css-tree": "^2.2.0",
+    "htmlparser2": "^8.0.1",
     "lit": "^2.2.7"
   },
   "devDependencies": {
